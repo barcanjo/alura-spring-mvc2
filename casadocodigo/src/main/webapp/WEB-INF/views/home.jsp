@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="tags" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,11 +53,17 @@
 				<nav id="main-nav">
 					
 					<ul class="clearfix">
+						<!-- Exibe os recursos dentro dessa tag apenas para um usuário autenticado no Spring Framework -->
+						<security:authorize access="isAuthenticated()">
+							<li><a href="${tags:mvcUrl('PC#listar').build() }" rel="nofollow">Lista de Produtos</a></li>
+							<!-- exibe o recurso apenas se o usuário tem o role ADMIN (ROLE_ADMIN) -->
+							<security:authorize access="hasRole('ROLE_ADMIN')">
+								<li><a href="${tags:mvcUrl('PC#form').build() }" rel="nofollow">Cadastro de Produtos</a></li>
+							</security:authorize>
+						</security:authorize>
 						<li><a href="/cart" rel="nofollow">Carrinho</a></li>
 
 						<li><a href="/pages/sobre-a-casa-do-codigo" rel="nofollow">Sobre Nós</a></li>
-
-						<li><a href="/pages/perguntas-frequentes" rel="nofollow">Perguntas Frequentes</a></li>
 					</ul>
 				</nav>
 			</div>

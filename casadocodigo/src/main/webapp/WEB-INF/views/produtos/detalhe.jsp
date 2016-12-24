@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -94,8 +94,10 @@
             </div>
           </header>
 
-      <section class="buy-options clearfix">  
-      <form action='<c:url value="/carrinho/adicionar" />' method="post" class="container">
+      <section class="buy-options clearfix">
+      
+      <!-- Usa o form do Spring para poder gerar o _csrf token para o Spring Security -->  
+      <form:form servletRelativeAction="/carrinho/adicionar" method="post" cssClass="container">
         <input type="hidden" value="${produto.id}" name="produtoId" />
         <ul id="variants" class="clearfix">
         <c:forEach items="${produto.precos}" var="preco">
@@ -109,7 +111,7 @@
         </ul>
         <button type="submit" class="submit-image icon-basket-alt" alt="Compre Agora" title="Compre Agora ${produto.titulo}!"></button>
 
-      </form>
+      </form:form>
 
     </section>
 
