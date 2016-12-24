@@ -1,5 +1,7 @@
 package org.casadocodigo.loja.conf;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.casadocodigo.loja.controllers.HomeController;
@@ -16,12 +18,15 @@ import org.springframework.format.datetime.DateFormatter;
 import org.springframework.format.datetime.DateFormatterRegistrar;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
+import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.google.common.cache.CacheBuilder;
@@ -133,5 +138,34 @@ public class AppWebConfiguration extends WebMvcConfigurerAdapter {
 		guavaCacheManager.setCacheBuilder(cacheBuilder);
 		
 		return guavaCacheManager;
+	}
+	
+	/**
+	 * Cria uma instância da classe ViewResolver que é responsável por resolver uma requisição devolver
+	 * a view adequada para a página.
+	 * Foi utilizada o conceito de ContentNegotiation para gerenciar qual conteúdo é solicitado e qual o
+	 * ViewResolver indicado para tratar a requisição.
+	 * Dessa forma é possível que através da mesma URL, mas com extensões diferentes, o Spring retorna uma
+	 * página HTML ou um objeto JSON (por exemplo).
+	 * 
+	 * @param manager Uma instância da classe ContentNegotiationManager injetada pelo Spring e responsável por
+	 * gerenciar a negociação do conteúdo.
+	 * @return Um bean da classe ViewResolver com o resolver adequado para tratar a requisição
+	 */
+	@Bean
+	public ViewResolver contentNegotiationViewResolver(ContentNegotiationManager manager){
+		// cria uma lista de ViewResolver que poderão ser escolhidos pelo ContentNegotiationManager para
+		// resolver a requisição do usuário de acordo com a extensão
+	    List<ViewResolver> viewResolvers = new ArrayList<>();
+	    viewResolvers.add(internalResourceViewResolver());
+	    viewResolvers.add(new JsonViewResolver());
+	    
+	    // cria uma instância da classe ContentNegotiatingViewResolver responsável por configurar os
+	    // objetos ViewResovler e o ContentNegotiatingViewResolver
+	    ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
+	    resolver.setViewResolvers(viewResolvers);
+	    resolver.setContentNegotiationManager(manager);
+	    
+	    return resolver;
 	}
 }
