@@ -32,6 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers("/produtos/**").permitAll() // qualquer recurso contido na URL /produtos está disponível para todos usuários
 			.antMatchers("/resources/**").permitAll() // libera os recursos na URL /resources/ para todos os usuários
 			.antMatchers("/").permitAll() // qualquer recurso contido na URL / está disponível para todos usuários
+			.antMatchers("/criar-usuario-admin").permitAll() // qualquer recurso contido na URL / está disponível para todos usuários
 			.anyRequest().authenticated() // qualquer outra requisição deve ser autenticada
 			.and().formLogin().loginPage("/login").permitAll() // e caso não esteja autenticado é redirecionado para o formulário de login
 			.and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")); // habilita o Spring Framework para receber um logout via GET na URL /logout
