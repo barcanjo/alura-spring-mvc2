@@ -28,9 +28,10 @@ public class ProdutoDAO {
 	public void gravar(Produto produto) {
 		manager.persist(produto);		
 	}
-
+	
+	// foi utilizado o join fetch para que os preços sejam carregados na mesma query de consulta dos produtos
 	public List<Produto> listar() {
-		return manager.createQuery("select p from Produto p", Produto.class).getResultList();
+		return manager.createQuery("select distinct(p) from Produto p join fetch p.precos", Produto.class).getResultList();
 	}
 
 	public Produto find(int id) {

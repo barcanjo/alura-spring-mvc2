@@ -26,6 +26,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.antMatchers("/produtos/form").hasRole("ADMIN") // a URL /produtos/form pode ser acessada por usuários com a role ADMIN
 			.antMatchers("/carrinho/**").permitAll() // a URL /carrinho pode ser acessada por todos usuários
+			.antMatchers("/pagamento/**").permitAll() // a URL /pagamento pode ser acessada por todos usuários
 			.antMatchers(HttpMethod.POST ,"/produtos").hasRole("ADMIN") // a URL /produtos acessada pelo método POST está disponível para usuários com a role ADMIN
 			.antMatchers(HttpMethod.GET, "/produtos").hasRole("ADMIN") // a URL /produtos acessada pelo método GET está disponível para usuários com a role ADMIN
 			.antMatchers("/produtos/**").permitAll() // qualquer recurso contido na URL /produtos está disponível para todos usuários

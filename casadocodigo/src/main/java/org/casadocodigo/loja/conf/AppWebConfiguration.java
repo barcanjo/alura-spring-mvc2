@@ -2,6 +2,7 @@ package org.casadocodigo.loja.conf;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.casadocodigo.loja.controllers.HomeController;
@@ -18,6 +19,8 @@ import org.springframework.format.datetime.DateFormatter;
 import org.springframework.format.datetime.DateFormatterRegistrar;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartResolver;
@@ -187,5 +190,26 @@ public class AppWebConfiguration extends WebMvcConfigurerAdapter {
 	@Bean
 	public LocaleResolver localeResolver() {
 		return new CookieLocaleResolver();
+	}
+	
+	/**
+	 * Cria um bean do tipo MailSender com todas as configurações para envio de e-mails no projeto.
+	 * @return O bean devidamente configurado.
+	 */
+	@Bean
+	public MailSender mailSender() {
+		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+		mailSender.setHost("smtp.gmail.com");
+		mailSender.setUsername("dev.katecafe@gmail.com");
+		mailSender.setPassword("Impacta@2015");
+		mailSender.setPort(587);
+		
+		Properties javaMailProperties = new Properties();
+		javaMailProperties.put("mail.smtp.auth", true);
+		javaMailProperties.put("mail.smtp.starttls.enable", true);
+		
+		mailSender.setJavaMailProperties(javaMailProperties);
+		
+		return mailSender;
 	}
 }

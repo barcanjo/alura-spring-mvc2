@@ -55,6 +55,7 @@
 				<tr>
 					<th>Título</th>
 					<th>Descrição</th>
+					<th>Preços</th>
 					<th>Páginas</th>
 					<th>Detalhes</th>
 				</tr>
@@ -65,6 +66,7 @@
 					<tr>
 						<td>${produto.titulo }</td>
 						<td>${produto.descricao }</td>
+						<td>${produto.precos }</td>
 						<td>${produto.paginas }</td>
 						<td>
 							<a href="${tags:mvcUrl('PC#detalhe').arg(0,produto.id).build()}">${produto.titulo}</a>
